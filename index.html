@@ -147,7 +147,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:cen
 .hero{min-height:80vh;display:flex;align-items:flex-end;padding-top:56px;position:relative;overflow:hidden;background:var(--forest)}
 .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(0,0,0,.04) 40px,rgba(0,0,0,.04) 41px)}
 .hero-left{position:relative;padding:5rem 3rem 4rem;max-width:900px}
-.hero-right{display:none}
 .hero-eyebrow{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ochre);margin-bottom:1.25rem;position:relative;display:flex;align-items:center;gap:.75rem}
 .hero-eyebrow::before{content:'';width:2rem;height:2px;background:var(--dirt);display:inline-block}
 .hero-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(3rem,5.5vw,6rem);line-height:.9;text-transform:uppercase;color:var(--chalk);margin-bottom:1.5rem;position:relative}
@@ -155,7 +154,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:cen
 .hero-sub{font-size:.95rem;font-weight:300;line-height:1.75;color:rgba(242,237,232,.6);max-width:38ch;margin-bottom:2.5rem;position:relative}
 .hero-cta{display:inline-flex;align-items:center;gap:.75rem;background:var(--dirt);color:var(--chalk);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:.15em;text-transform:uppercase;padding:1rem 2rem;border:none;cursor:pointer;transition:background .2s,transform .15s}
 .hero-cta:hover{background:var(--dirt-dark);transform:translateY(-1px)}
-.hero-right{background:var(--slate);display:flex;flex-direction:column;justify-content:center;padding:5rem 3rem 4rem;border-left:3px solid var(--dirt)}
+.hero-right{flex:1;align-self:stretch;min-width:280px;overflow:hidden;border-left:3px solid var(--dirt);position:relative}
+.hero-right img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-right::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,31,28,.5),transparent 40%)}
+.scroll-cue{position:absolute;bottom:1.5rem;left:3rem;display:flex;align-items:center;gap:.6rem;cursor:pointer;z-index:2;opacity:.65;transition:opacity .2s}
+.scroll-cue:hover{opacity:1}
+.scroll-cue span{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(242,237,232,.75)}
+.scroll-cue svg{animation:scrollBounce 1.8s ease-in-out infinite}
+@keyframes scrollBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
 .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(242,237,232,.07);border:1px solid rgba(242,237,232,.07);margin-bottom:2.5rem}
 .stat-cell{background:var(--slate);padding:1.75rem 1.5rem}
 .stat-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:3rem;line-height:1;color:var(--ochre);display:block;margin-bottom:.2rem}
@@ -426,8 +432,10 @@ footer{background:#0A0D0B;padding:2rem;border-top:1px solid rgba(242,237,232,.05
   .nav-links a.nav-yt{font-size:.85rem!important}
 
   /* HERO */
-  .hero{min-height:auto}
+  .hero{min-height:auto;flex-direction:column}
   .hero-left{padding:3rem 1.5rem 2.5rem}
+  .hero-right{border-left:none;border-top:3px solid var(--dirt);height:280px;flex:none;min-width:0}
+  .scroll-cue{display:none}
 
   /* HUB GRID */
   .region-bar{padding:.65rem 1rem;gap:.4rem}
@@ -643,6 +651,13 @@ footer{background:#0A0D0B;padding:2rem;border-top:1px solid rgba(242,237,232,.05
       <h1 class="hero-title">29 Hubs.<br>200+ Videos.<br>1400+ KM.<br><em>ONE</em><br>Website.</h1>
       <p class="hero-sub">Warren & Melissa have ridden <em style="font-style:normal;color:var(--ochre)">almost</em> every trail worth riding in the Western Cape. Now you can find every hub, every trail & every video all in one place…</p>
       <button class="hero-cta" onclick="document.getElementById('hubs-anchor').scrollIntoView({behavior:'smooth'})">Browse all hubs <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    <div class="hero-right">
+      <img src="hero-photo.jpg" alt="Warren and Melissa on the trail, Western Cape MTB" loading="eager">
+    </div>
+    <div class="scroll-cue" onclick="document.getElementById('hubs-anchor').scrollIntoView({behavior:'smooth'})">
+      <span>Scroll</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
   </section>
   <div id="hubs-anchor"></div>
