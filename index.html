@@ -144,9 +144,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:cen
 .page{display:none}.page.active{display:block}
 
 /* HOME HERO */
-.hero{min-height:80vh;display:flex;justify-content:space-between;align-items:flex-end;padding-top:56px;position:relative;overflow:hidden;background:var(--forest)}
+.hero{min-height:80vh;display:flex;padding-top:56px;position:relative;overflow:hidden;background:var(--forest)}
+.hero-inner{max-width:1400px;margin:0 auto;width:100%;display:flex;justify-content:space-between;gap:2rem;padding:0 2rem}
+.hero-left{position:relative;padding:5rem 0 4rem;max-width:640px;align-self:flex-end}
+.hero-right{flex:none;width:400px;max-width:36vw;align-self:center;display:flex;align-items:center;justify-content:center;padding:2rem 0}
+.hero-right img{width:100%;height:auto;max-height:70vh;object-fit:cover;border-radius:6px;box-shadow:0 25px 60px -12px rgba(0,0,0,.55);display:block}
 .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(0,0,0,.04) 40px,rgba(0,0,0,.04) 41px)}
-.hero-left{position:relative;padding:5rem 3rem 4rem;max-width:900px}
 .hero-eyebrow{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ochre);margin-bottom:1.25rem;position:relative;display:flex;align-items:center;gap:.75rem}
 .hero-eyebrow::before{content:'';width:2rem;height:2px;background:var(--dirt);display:inline-block}
 .hero-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(3rem,5.5vw,6rem);line-height:.9;text-transform:uppercase;color:var(--chalk);margin-bottom:1.5rem;position:relative}
@@ -154,9 +157,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:cen
 .hero-sub{font-size:.95rem;font-weight:300;line-height:1.75;color:rgba(242,237,232,.6);max-width:38ch;margin-bottom:2.5rem;position:relative}
 .hero-cta{display:inline-flex;align-items:center;gap:.75rem;background:var(--dirt);color:var(--chalk);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:.15em;text-transform:uppercase;padding:1rem 2rem;border:none;cursor:pointer;transition:background .2s,transform .15s}
 .hero-cta:hover{background:var(--dirt-dark);transform:translateY(-1px)}
-.hero-right{flex:none;width:400px;max-width:34vw;align-self:stretch;overflow:hidden;border-left:3px solid var(--dirt);position:relative}
-.hero-right img{width:100%;height:100%;object-fit:cover;display:block}
-.hero-right::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,31,28,.5),transparent 40%)}
 .scroll-cue{position:absolute;bottom:1.5rem;left:3rem;display:flex;align-items:center;gap:.6rem;cursor:pointer;z-index:2;opacity:.65;transition:opacity .2s}
 .scroll-cue:hover{opacity:1}
 .scroll-cue span{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(242,237,232,.75)}
@@ -432,9 +432,11 @@ footer{background:#0A0D0B;padding:2rem;border-top:1px solid rgba(242,237,232,.05
   .nav-links a.nav-yt{font-size:.85rem!important}
 
   /* HERO */
-  .hero{min-height:auto;flex-direction:column}
-  .hero-left{padding:3rem 1.5rem 2.5rem}
-  .hero-right{border-left:none;border-top:3px solid var(--dirt);height:280px;width:100%;max-width:100%;flex:none}
+  .hero{min-height:auto}
+  .hero-inner{flex-direction:column;align-items:center;gap:0;padding:0 1.5rem}
+  .hero-left{padding:3rem 0 2rem;max-width:100%;align-self:stretch}
+  .hero-right{width:100%;max-width:100%;padding:1rem 0 2.5rem}
+  .hero-right img{max-width:280px;max-height:none;margin:0 auto}
   .scroll-cue{display:none}
 
   /* HUB GRID */
@@ -646,14 +648,16 @@ footer{background:#0A0D0B;padding:2rem;border-top:1px solid rgba(242,237,232,.05
 <!-- HOME PAGE -->
 <div class="page active" id="page-home">
   <section class="hero">
-    <div class="hero-left">
-      <p class="hero-eyebrow">The Western Cape's MTB guide</p>
-      <h1 class="hero-title">29 Hubs.<br>200+ Videos.<br>1400+ KM.<br><em>ONE</em><br>Website.</h1>
-      <p class="hero-sub">Warren & Melissa have ridden <em style="font-style:normal;color:var(--ochre)">almost</em> every trail worth riding in the Western Cape. Now you can find every hub, every trail & every video all in one place…</p>
-      <button class="hero-cta" onclick="document.getElementById('hubs-anchor').scrollIntoView({behavior:'smooth'})">Browse all hubs <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-    </div>
-    <div class="hero-right">
-      <img src="hero-photo.jpg" alt="Warren and Melissa on the trail, Western Cape MTB" loading="eager">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <p class="hero-eyebrow">The Western Cape's MTB guide</p>
+        <h1 class="hero-title">29 Hubs.<br>200+ Videos.<br>1400+ KM.<br><em>ONE</em><br>Website.</h1>
+        <p class="hero-sub">Warren & Melissa have ridden <em style="font-style:normal;color:var(--ochre)">almost</em> every trail worth riding in the Western Cape. Now you can find every hub, every trail & every video all in one place…</p>
+        <button class="hero-cta" onclick="document.getElementById('hubs-anchor').scrollIntoView({behavior:'smooth'})">Browse all hubs <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+      <div class="hero-right">
+        <img src="hero-photo.jpg" alt="Warren and Melissa on the trail, Western Cape MTB" loading="eager">
+      </div>
     </div>
     <div class="scroll-cue" onclick="document.getElementById('hubs-anchor').scrollIntoView({behavior:'smooth'})">
       <span>Scroll</span>
