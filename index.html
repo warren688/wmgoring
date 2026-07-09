@@ -1539,6 +1539,7 @@ function openMapPanel(hub){
     <div class="mp-cta">
       <button class="mp-btn-main" onclick="openHub('${hub.id}')">View full hub page <span>→</span></button>
       <a class="mp-btn-sec" href="https://www.youtube.com/playlist?list=${playlist}" target="_blank">Watch videos on YouTube <span>↗</span></a>
+      ${HUBS[hub.id]&&HUBS[hub.id].trailforks?`<a class="mp-btn-sec" href="${HUBS[hub.id].trailforks}" target="_blank">View on Trailforks <span>↗</span></a>`:''}
     </div>`;
   document.getElementById('map-panel').classList.add('open');
 }
