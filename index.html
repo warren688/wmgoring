@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- Primary SEO -->
-<title>Warren &amp; Melissa Go Riding | Western Cape MTB Trail Hub Directory</title>
-<meta name="description" content="The complete Western Cape MTB guide. 29 trail hubs, 200+ videos and 1400+ km ridden by Warren &amp; Melissa. Permits, access, trail grades and videos for every hub from Cape Town to the Garden Route.">
+<title id="page-title">Warren &amp; Melissa Go Riding | Western Cape MTB Trail Hub Directory</title>
+<meta name="description" id="page-desc" content="The complete Western Cape MTB guide. 30 trail hubs, 200+ videos and 1400+ km ridden by Warren &amp; Melissa. Permits, access, trail grades and videos for every hub from Cape Town to the Garden Route.">
 <meta name="keywords" content="Western Cape MTB, mountain biking Western Cape, Cape Town mountain biking, Jonkershoek trails, Tokai MTB, Stellenbosch mountain biking, Paarl Trails, Contermanskloof, Helderberg MTB, Bottelary Hills, Spice Route MTB, trail permits Western Cape, MTB trail guide South Africa, Greyton MTB, Witfontein George, Warren Melissa Go Riding, wmgoriding">
 <meta name="author" content="Warren &amp; Melissa Go Riding">
 <meta name="robots" content="index, follow">
@@ -559,6 +559,34 @@ footer{background:#0A0D0B;padding:2rem;border-top:1px solid rgba(242,237,232,.05
 .faq-item.open .faq-a{display:block}
 </style>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Warren & Melissa Go Riding",
+  "url": "https://wmgoriding.com",
+  "description": "The complete Western Cape MTB trail hub directory. 30 hubs, permits, parking, local tips and videos.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://wmgoriding.com/#hub/{search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Warren & Melissa Go Riding",
+  "url": "https://wmgoriding.com",
+  "logo": "https://wmgoriding.com/icon-512.png",
+  "sameAs": [
+    "https://www.youtube.com/@WarrenMelissaGoRiding",
+    "https://www.instagram.com/wmgoridingsa/",
+    "https://www.facebook.com/warrenmelissagoriding"
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -1538,6 +1566,12 @@ const NM={jonkershoek:{n:'Jonkershoek',r:'Stellenbosch Valley'},tokai:{n:'Tokai 
 
 /* ── PAGE NAVIGATION ── */
 function showPage(pg){
+  if(pg==='home'){
+    document.getElementById('page-title').textContent='Warren & Melissa Go Riding | Western Cape MTB Trail Hub Directory';
+    const descEl=document.getElementById('page-desc');
+    if(descEl) descEl.setAttribute('content','The complete Western Cape MTB guide. 30 trail hubs, 200+ videos and 1400+ km ridden by Warren & Melissa. Permits, access, trail grades and videos for every hub from Cape Town to the Garden Route.');
+    removeSchema('faq-schema');
+  }
   ['home','map','hub','trails','about','disclaimer','permits','weekends'].forEach(p=>{
     const el=document.getElementById('page-'+p);
     if(el) el.classList.toggle('active',p===pg);
@@ -1711,6 +1745,33 @@ async function fetchVideos(playlistId){
 }
 
 /* ── HUB DETAIL ── */
+
+function removeSchema(id){
+  const el=document.getElementById(id);
+  if(el) el.remove();
+}
+function injectFAQSchema(hubId){
+  removeSchema('faq-schema');
+  const faqs=FAQ[hubId];
+  if(!faqs||!faqs.length) return;
+  const schema={
+    '@context':'https://schema.org',
+    '@type':'FAQPage',
+    'mainEntity':faqs.map(function(f){
+      return {
+        '@type':'Question',
+        'name':f.q,
+        'acceptedAnswer':{'@type':'Answer','text':f.a}
+      };
+    })
+  };
+  const script=document.createElement('script');
+  script.id='faq-schema';
+  script.type='application/ld+json';
+  script.textContent=JSON.stringify(schema);
+  document.head.appendChild(script);
+}
+
 async function openHub(hubId){
   currentHubId=hubId;
   const hub=HUBS[hubId];
@@ -1718,6 +1779,14 @@ async function openHub(hubId){
   showPage('hub');
   window.scrollTo(0,0);
   renderShell(hub);
+  // Dynamic SEO: update title and meta description per hub
+  const seoTitle=hub.name+' MTB Trail Guide | Permits, Parking & Local Tips | WMGoriding';
+  const seoDesc='Planning a ride at '+hub.name+'? Find permits, parking, trail difficulty, local tips, videos and FAQs from riders who have ridden every trail. '+hub.region+'.';
+  document.getElementById('page-title').textContent=seoTitle;
+  const descEl=document.getElementById('page-desc');
+  if(descEl) descEl.setAttribute('content',seoDesc);
+  // FAQ structured data schema for Google
+  injectFAQSchema(hubId);
   const vids=await fetchVideos(hub.playlist);
   currentVideos=vids;
   const ce=document.getElementById('vid-count-num');
