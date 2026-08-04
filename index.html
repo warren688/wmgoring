@@ -575,9 +575,9 @@ footer{background:#0A0D0B;padding:2rem;border-top:1px solid rgba(242,237,232,.05
     <li><a onclick="showPage('map');closeMobileMenu()" id="nav-map">Map</a></li>
     <li><a onclick="showPage('about');closeMobileMenu()" id="nav-about">About</a></li>
     <li><a onclick="showPage('disclaimer');closeMobileMenu()" id="nav-disclaimer">Disclaimer</a></li>
-    <li><a href="/partners.html" id="nav-partners">Partners</a></li>
+    <li><a href="/partners.html" id="nav-partners">Gear We Trust</a></li>
     <li><a onclick="showPage('permits');closeMobileMenu()" id="nav-permits" style="color:var(--ochre)!important">Permits</a></li>
-    <li><a onclick="showPage('tours');closeMobileMenu()" id="nav-tours" style="color:var(--teal)!important">Tours</a></li>
+    <li><a onclick="showPage('weekends');closeMobileMenu()" id="nav-weekends" style="color:var(--teal)!important">Weekend Plans</a></li>
     <li class="desktop-social"><a href="https://www.youtube.com/@WarrenMelissaGoRiding" target="_blank" class="nav-yt">YouTube</a></li>
     <li class="desktop-social"><a href="https://www.facebook.com/warrenmelissagoriding" target="_blank" class="nav-yt" style="color:rgba(100,160,255,.8)!important">Facebook</a></li>
     <li class="desktop-social"><a href="https://www.instagram.com/wmgoridingsa/" target="_blank" class="nav-yt" style="color:rgba(225,130,200,.8)!important">Instagram</a></li>
@@ -1538,11 +1538,11 @@ const NM={jonkershoek:{n:'Jonkershoek',r:'Stellenbosch Valley'},tokai:{n:'Tokai 
 
 /* ── PAGE NAVIGATION ── */
 function showPage(pg){
-  ['home','map','hub','trails','about','disclaimer','permits','tours'].forEach(p=>{
+  ['home','map','hub','trails','about','disclaimer','permits','weekends'].forEach(p=>{
     const el=document.getElementById('page-'+p);
     if(el) el.classList.toggle('active',p===pg);
   });
-  const navIds={home:'nav-home',map:'nav-map',trails:'nav-trails',about:'nav-about',disclaimer:'nav-disclaimer',permits:'nav-permits',tours:'nav-tours'};
+  const navIds={home:'nav-home',map:'nav-map',trails:'nav-trails',about:'nav-about',disclaimer:'nav-disclaimer',permits:'nav-permits',weekends:'nav-weekends'};
   Object.entries(navIds).forEach(([p,id])=>{
     const el=document.getElementById(id);
     if(el) el.classList.toggle('active',p===pg);
@@ -1552,7 +1552,7 @@ function showPage(pg){
   if(pg==='about') window.scrollTo(0,0);
   if(pg==='disclaimer') window.scrollTo(0,0);
   if(pg==='map') initMap();
-  if(pg==='tours') window.scrollTo(0,0);
+  if(pg==='weekends') window.scrollTo(0,0);
   if(pg==='permits'){
     window.scrollTo(0,0);
     const iframe=document.getElementById('permits-iframe');
@@ -2100,6 +2100,16 @@ function handleHash(){
 window.addEventListener('DOMContentLoaded',handleHash);
 window.addEventListener('popstate',handleHash);
 
+// Hash-based routing
+function handleHash(){
+  const hash=window.location.hash.replace('#','');
+  if(!hash){showPage('home');return;}
+  if(hash.startsWith('hub/')){const hubId=hash.replace('hub/','');if(HUBS[hubId])openHub(hubId);else showPage('home');}
+  else{const validPages=['trails','map','about','partners','permits','tours','disclaimer'];if(validPages.includes(hash))showPage(hash);else showPage('home');}
+}
+window.addEventListener('DOMContentLoaded',handleHash);
+window.addEventListener('popstate',handleHash);
+
 // Tours form handler
 function handleToursForm(e){
   e.preventDefault();
@@ -2141,112 +2151,102 @@ document.addEventListener('click',function(e){
 </script>
 
 <!-- PERMITS PAGE -->
-<!-- TOURS PAGE -->
-<div class="page" id="page-tours" style="background:var(--slate);min-height:100vh;padding-top:56px">
+<!-- WEEKEND PLANS PAGE -->
+<div class="page" id="page-weekends" style="background:var(--slate);min-height:100vh;padding-top:56px">
+
+  <!-- HERO -->
   <div style="background:var(--forest);border-bottom:1px solid rgba(242,237,232,.08);padding:4rem 2rem 3rem">
-    <div style="max-width:900px;margin:0 auto;text-align:center">
-      <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:var(--teal);margin-bottom:.75rem">Western Cape MTB Experiences</p>
-      <h1 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2.4rem,6vw,4.2rem);text-transform:uppercase;color:var(--chalk);line-height:.95;letter-spacing:-.02em;margin-bottom:1.25rem">Guided MTB Tours<br><span style="color:var(--ochre)">With Warren &amp; Melissa</span></h1>
-      <p style="font-size:.95rem;font-weight:300;color:rgba(242,237,232,.65);max-width:58ch;margin:0 auto 2rem;line-height:1.75">We've ridden every hub on this site. Now we're taking small groups out to experience the best of them. Permits handled, routes planned, post-ride wine sorted. You just ride.</p>
-      <a href="#tours-enquire" onclick="document.getElementById('tours-enquire').scrollIntoView({behavior:'smooth'})" style="display:inline-block;background:var(--ochre);color:var(--slate);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;padding:.85rem 2.2rem;text-decoration:none;transition:opacity .18s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Enquire Now</a>
+    <div style="max-width:900px;margin:0 auto">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:var(--teal);margin-bottom:.75rem">Plan Your Ride</p>
+      <h1 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2.4rem,6vw,4.2rem);text-transform:uppercase;color:var(--chalk);line-height:.95;letter-spacing:-.02em;margin-bottom:1.25rem">Weekend<br><span style="color:var(--ochre)">Plans</span></h1>
+      <p style="font-size:.95rem;font-weight:300;color:rgba(242,237,232,.65);max-width:58ch;line-height:1.75">Not just a trail. A full weekend. Where to ride, where to eat, where to stay and what to do in between. Warren and Melissa's favourite Western Cape MTB weekends, planned for you.</p>
     </div>
   </div>
-  <div style="max-width:900px;margin:0 auto;padding:3.5rem 2rem">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-bottom:4rem">
-      <div style="border-left:3px solid var(--ochre);padding-left:1.25rem">
-        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;color:var(--chalk);margin-bottom:.4rem">30 Hubs Ridden</p>
-        <p style="font-size:.8rem;font-weight:300;color:rgba(242,237,232,.55);line-height:1.6">We've personally ridden and filmed every hub we take you to. No guesswork, no surprises.</p>
-      </div>
-      <div style="border-left:3px solid var(--teal);padding-left:1.25rem">
-        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;color:var(--chalk);margin-bottom:.4rem">Small Groups Only</p>
-        <p style="font-size:.8rem;font-weight:300;color:rgba(242,237,232,.55);line-height:1.6">Maximum 8 riders per tour. You ride at your pace and get our full attention.</p>
-      </div>
-      <div style="border-left:3px solid var(--dirt);padding-left:1.25rem">
-        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;color:var(--chalk);margin-bottom:.4rem">Everything Handled</p>
-        <p style="font-size:.8rem;font-weight:300;color:rgba(242,237,232,.55);line-height:1.6">Permits, routes, post-ride stops — all sorted before you arrive.</p>
-      </div>
-    </div>
-    <div style="border:1px solid rgba(242,237,232,.08);margin-bottom:2rem;overflow:hidden">
+
+  <div style="max-width:900px;margin:0 auto;padding:3rem 2rem">
+
+    <!-- PLAN 1: STELLENBOSCH -->
+    <div style="border:1px solid rgba(242,237,232,.08);margin-bottom:2.5rem;overflow:hidden">
       <div style="background:linear-gradient(135deg,var(--forest),#0d1f18);padding:2rem;border-bottom:1px solid rgba(242,237,232,.08)">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:.75rem">
-          <div><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--teal)">Half-Day Experience</span>
-          <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;text-transform:uppercase;color:var(--chalk);margin:.3rem 0 0;line-height:1">Hub Explorer</h2></div>
-          <div style="text-align:right"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.6rem;color:var(--teal);line-height:1">R950</p><p style="font-size:.7rem;color:rgba(242,237,232,.35);font-weight:300">per person</p></div>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--teal);margin-bottom:.5rem">Weekend Plan 1</p>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.9rem;text-transform:uppercase;color:var(--chalk);margin-bottom:.6rem;line-height:1">The Perfect<br>Stellenbosch Weekend</h2>
+        <p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.6);line-height:1.7">Two of the finest trail hubs in the Winelands, world-class food and wine, and a base in one of South Africa's most beautiful towns. This is the weekend that converts people to mountain biking for life.</p>
+        <div style="display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,237,232,.4)">📍 Stellenbosch</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,237,232,.4)">🚵 Intermediate</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,237,232,.4)">📅 2 Days</span>
         </div>
-        <p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.6);line-height:1.7">One hub, half a day, no stress. We pick the trail to match your level, handle all permits and show you the Western Cape at its best. Ends with coffee or wine at the estate.</p>
       </div>
-      <div style="padding:1.5rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--teal)">✓</span> 3-4 hours on trail</div>
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--teal)">✓</span> Permits included</div>
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--teal)">✓</span> Max 8 riders</div>
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--teal)">✓</span> Post-ride coffee or wine</div>
+      <div style="padding:1.75rem 2rem">
+        <div style="display:grid;grid-template-columns:80px 1fr;gap:0;margin-bottom:1.5rem">
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre)">Friday</p></div>
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.7);line-height:1.6">Drive to Stellenbosch. Check in to your accommodation. Dinner at De Warenmarkt or Terroir. Early night — you have a big day tomorrow.</p></div>
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre)">Saturday</p></div>
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.7);line-height:1.6">Early start at <button onclick="openHub('jonkershoek');showPage('hub')" style="background:none;border:none;color:var(--teal);font-size:.82rem;font-weight:600;cursor:pointer;padding:0;text-decoration:underline">Jonkershoek</button>. Ride the Armageddon Trail. Permits R90 at the gate. Balance Coffee at the entrance for a pre-ride fix. Post-ride lunch in Stellenbosch town. Afternoon wine tasting at Muratie or Tokara. Braai or dinner at Jardine.</p></div>
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre)">Sunday</p></div>
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.7);line-height:1.6">Morning ride at <button onclick="openHub('banhoek');showPage('hub')" style="background:none;border:none;color:var(--teal);font-size:.82rem;font-weight:600;cursor:pointer;padding:0;text-decoration:underline">Banhoek</button>. Some of the best singletrack in the country in a stunning valley setting. Lunch at Babylonstoren on the way home. Back in Cape Town by late afternoon.</p></div>
+          <div style="padding:.75rem 0"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre)">Stay</p></div>
+          <div style="padding:.75rem 0"><p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.7);line-height:1.6">Stellenbosch town has everything from budget guesthouses to boutique hotels. Oude Werf Hotel is a favourite. Alternatively, several Jonkershoek Valley farm stays put you right at the trailhead.</p></div>
+        </div>
       </div>
     </div>
-    <div style="border:1px solid rgba(212,168,67,.25);margin-bottom:2rem;overflow:hidden">
-      <div style="background:linear-gradient(135deg,#1a2e1f,#0d1f18);padding:2rem;border-bottom:1px solid rgba(212,168,67,.15)">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:.75rem">
-          <div><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ochre)">Full-Day Winelands</span>
-          <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;text-transform:uppercase;color:var(--chalk);margin:.3rem 0 0;line-height:1">The Winelands Ride</h2></div>
-          <div style="text-align:right"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.6rem;color:var(--ochre);line-height:1">R2 500</p><p style="font-size:.7rem;color:rgba(242,237,232,.35);font-weight:300">per person</p></div>
+
+    <!-- PLAN 2: WINELANDS BIG DAY -->
+    <div style="border:1px solid rgba(212,168,67,.2);margin-bottom:2.5rem;overflow:hidden">
+      <div style="background:linear-gradient(135deg,#1a2e1f,#0d1f18);padding:2rem;border-bottom:1px solid rgba(212,168,67,.12)">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ochre);margin-bottom:.5rem">Weekend Plan 2</p>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.9rem;text-transform:uppercase;color:var(--chalk);margin-bottom:.6rem;line-height:1">The Winelands<br>Big Day Out</h2>
+        <p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.6);line-height:1.7">Banhoek in the morning, Boschendal in the afternoon. Two of the best trail hubs in the Western Cape back to back, with lunch at the Boschendal Deli in between. This is the one-day version of the perfect Winelands MTB experience.</p>
+        <div style="display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,237,232,.4)">📍 Franschhoek Valley</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,237,232,.4)">🚵 Intermediate</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,237,232,.4)">📅 1 Big Day</span>
         </div>
-        <p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.6);line-height:1.7">Banhoek in the morning, Boschendal in the afternoon. Two of the finest trail hubs in the Western Cape, back to back, with lunch at the Boschendal Deli and a wine tasting to close.</p>
       </div>
-      <div style="padding:1.5rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--ochre)">✓</span> Full day on trail</div>
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--ochre)">✓</span> 2 world-class hubs</div>
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--ochre)">✓</span> All permits included</div>
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--ochre)">✓</span> Lunch at Boschendal Deli</div>
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--ochre)">✓</span> Wine tasting included</div>
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--ochre)">✓</span> Max 8 riders</div>
-      </div>
-    </div>
-    <div style="border:1px solid rgba(139,58,90,.3);margin-bottom:3.5rem;overflow:hidden">
-      <div style="background:linear-gradient(135deg,#1f1218,#0d1f18);padding:2rem;border-bottom:1px solid rgba(139,58,90,.2)">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:.75rem">
-          <div><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--wine)">Weekend Escape</span>
-          <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;text-transform:uppercase;color:var(--chalk);margin:.3rem 0 0;line-height:1">The Full Weekend</h2></div>
-          <div style="text-align:right"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.6rem;color:var(--wine);line-height:1">R12 000</p><p style="font-size:.7rem;color:rgba(242,237,232,.35);font-weight:300">per person</p></div>
+      <div style="padding:1.75rem 2rem">
+        <div style="display:grid;grid-template-columns:80px 1fr;gap:0;margin-bottom:1.5rem">
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre)">Morning</p></div>
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.7);line-height:1.6">Early start at <button onclick="openHub('banhoek');showPage('hub')" style="background:none;border:none;color:var(--teal);font-size:.82rem;font-weight:600;cursor:pointer;padding:0;text-decoration:underline">Banhoek</button> in the valley. Ride 2-3 hours of world-class singletrack. The valley in the morning light is extraordinary.</p></div>
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre)">Midday</p></div>
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.7);line-height:1.6">Drive 15 minutes to <button onclick="openHub('boschendal');showPage('hub')" style="background:none;border:none;color:var(--teal);font-size:.82rem;font-weight:600;cursor:pointer;padding:0;text-decoration:underline">Boschendal</button>. Lunch at the Boschendal Deli. One of the best restaurant stops in South Africa — don't rush it.</p></div>
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre)">Afternoon</p></div>
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.7);line-height:1.6">Ride Boschendal. The Inferno descent is the highlight. Permit R115 at the Trail Centre. End with a coffee or cold drink at the Farm Shop.</p></div>
+          <div style="padding:.75rem 0"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre)">Stay</p></div>
+          <div style="padding:.75rem 0"><p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.7);line-height:1.6">Make a weekend of it and stay in Franschhoek — 10 minutes from both hubs. The town has exceptional restaurants and accommodation from boutique guesthouses to luxury wine estate stays.</p></div>
         </div>
-        <p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.6);line-height:1.7">Friday to Sunday. Three hubs, two nights at a wine estate, all meals, all permits and the kind of riding that makes you want to move to the Western Cape permanently.</p>
-      </div>
-      <div style="padding:1.5rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--wine)">✓</span> Fri evening to Sun afternoon</div>
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--wine)">✓</span> 3 premier trail hubs</div>
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--wine)">✓</span> Wine estate accommodation</div>
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--wine)">✓</span> All meals included</div>
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--wine)">✓</span> Max 6 riders</div>
-        <div style="font-size:.78rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.5rem"><span style="color:var(--wine)">✓</span> All permits included</div>
       </div>
     </div>
-    <div id="tours-enquire" style="border-top:1px solid rgba(242,237,232,.08);padding-top:3rem">
-      <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);margin-bottom:.5rem">Book Your Spot</p>
-      <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2rem;text-transform:uppercase;color:var(--chalk);margin-bottom:.75rem">Let's Ride</h2>
-      <p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.5);line-height:1.7;margin-bottom:2rem">Fill in the form below and we'll come back to you within 24 hours.</p>
-      <form onsubmit="handleToursForm(event)" style="display:grid;gap:1rem">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-          <div><label style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,232,.4);display:block;margin-bottom:.4rem">Your Name</label>
-          <input type="text" name="name" required placeholder="Warren Lawrence" style="width:100%;background:rgba(242,237,232,.05);border:1px solid rgba(242,237,232,.12);color:var(--chalk);font-family:'Barlow',sans-serif;font-size:.82rem;padding:.65rem .85rem;box-sizing:border-box;outline:none" onfocus="this.style.borderColor='rgba(212,168,67,.4)'" onblur="this.style.borderColor='rgba(242,237,232,.12)'"></div>
-          <div><label style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,232,.4);display:block;margin-bottom:.4rem">Email Address</label>
-          <input type="email" name="email" required placeholder="you@example.com" style="width:100%;background:rgba(242,237,232,.05);border:1px solid rgba(242,237,232,.12);color:var(--chalk);font-family:'Barlow',sans-serif;font-size:.82rem;padding:.65rem .85rem;box-sizing:border-box;outline:none" onfocus="this.style.borderColor='rgba(212,168,67,.4)'" onblur="this.style.borderColor='rgba(242,237,232,.12)'"></div>
+
+    <!-- PLAN 3: DURBANVILLE FAMILY -->
+    <div style="border:1px solid rgba(90,158,143,.2);margin-bottom:2.5rem;overflow:hidden">
+      <div style="background:linear-gradient(135deg,#0d1f1a,#0d1f18);padding:2rem;border-bottom:1px solid rgba(90,158,143,.12)">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--teal);margin-bottom:.5rem">Weekend Plan 3</p>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.9rem;text-transform:uppercase;color:var(--chalk);margin-bottom:.6rem;line-height:1">The Durbanville<br>Family Weekend</h2>
+        <p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.6);line-height:1.7">Two days of riding across the best family and beginner hubs in the Durbanville network. Great food, wine estate settings and trails that build confidence at every level. Perfect for mixed groups and first-timers.</p>
+        <div style="display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,237,232,.4)">📍 Durbanville Hills</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,237,232,.4)">🟢 Beginner Friendly</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,237,232,.4)">👨‍👩‍👧 Families Welcome</span>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-          <div><label style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,232,.4);display:block;margin-bottom:.4rem">Tour Interest</label>
-          <select name="tour" style="width:100%;background:rgba(242,237,232,.05);border:1px solid rgba(242,237,232,.12);color:var(--chalk);font-family:'Barlow',sans-serif;font-size:.82rem;padding:.65rem .85rem;box-sizing:border-box;outline:none;-webkit-appearance:none">
-            <option value="" style="background:var(--slate)">Select a tour</option>
-            <option value="hub-explorer" style="background:var(--slate)">Hub Explorer — Half Day (R950pp)</option>
-            <option value="winelands" style="background:var(--slate)">The Winelands Ride — Full Day (R2 500pp)</option>
-            <option value="weekend" style="background:var(--slate)">The Full Weekend (R12 000pp)</option>
-            <option value="custom" style="background:var(--slate)">Corporate / Custom Group</option>
-          </select></div>
-          <div><label style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,232,.4);display:block;margin-bottom:.4rem">Group Size</label>
-          <input type="number" name="groupsize" min="1" max="8" placeholder="2" style="width:100%;background:rgba(242,237,232,.05);border:1px solid rgba(242,237,232,.12);color:var(--chalk);font-family:'Barlow',sans-serif;font-size:.82rem;padding:.65rem .85rem;box-sizing:border-box;outline:none" onfocus="this.style.borderColor='rgba(212,168,67,.4)'" onblur="this.style.borderColor='rgba(242,237,232,.12)'"></div>
+      </div>
+      <div style="padding:1.75rem 2rem">
+        <div style="display:grid;grid-template-columns:80px 1fr;gap:0;margin-bottom:1.5rem">
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)">Saturday</p></div>
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.7);line-height:1.6">Morning at <button onclick="openHub('bloemendal');showPage('hub')" style="background:none;border:none;color:var(--teal);font-size:.82rem;font-weight:600;cursor:pointer;padding:0;text-decoration:underline">Bloemendal</button> — the perfect first MTB experience. Smooth, signed vineyard trails for all abilities. Post-ride lunch at Bon Amis on the estate. One of the best restaurant stops in the Tygerberg network.</p></div>
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)">Sunday</p></div>
+          <div style="padding:.75rem 0;border-bottom:1px solid rgba(242,237,232,.06)"><p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.7);line-height:1.6">Morning at <button onclick="openHub('hillcrest');showPage('hub')" style="background:none;border:none;color:var(--teal);font-size:.82rem;font-weight:600;cursor:pointer;padding:0;text-decoration:underline">Hillcrest Estate</button> for the views. Table Bay on a clear winter morning from the saddle is something you won't forget. Wine tasting at the estate after. Home for Sunday lunch.</p></div>
+          <div style="padding:.75rem 0"><p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)">Stay</p></div>
+          <div style="padding:.75rem 0"><p style="font-size:.82rem;font-weight:300;color:rgba(242,237,232,.7);line-height:1.6">Both hubs are 30 minutes from Cape Town so this works as a day trip from the city. Alternatively Durbanville village has good guesthouses if you want to make a proper weekend of it.</p></div>
         </div>
-        <div><label style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,232,.4);display:block;margin-bottom:.4rem">Tell Us About Your Group</label>
-        <textarea name="message" rows="4" placeholder="Riding level, preferred dates, any questions..." style="width:100%;background:rgba(242,237,232,.05);border:1px solid rgba(242,237,232,.12);color:var(--chalk);font-family:'Barlow',sans-serif;font-size:.82rem;padding:.65rem .85rem;box-sizing:border-box;outline:none;resize:vertical" onfocus="this.style.borderColor='rgba(212,168,67,.4)'" onblur="this.style.borderColor='rgba(242,237,232,.12)'"></textarea></div>
-        <button type="submit" id="tours-submit-btn" style="background:var(--ochre);color:var(--slate);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;padding:.85rem 2rem;border:none;cursor:pointer;transition:opacity .18s;justify-self:start" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Send Enquiry</button>
-        <div id="tours-form-msg" style="display:none;font-size:.82rem;font-weight:300;color:var(--teal);padding:.5rem 0"></div>
-      </form>
+      </div>
     </div>
+
+    <!-- MORE COMING -->
+    <div style="border:1px solid rgba(242,237,232,.06);padding:2rem;text-align:center">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(242,237,232,.25);margin-bottom:.75rem">More Plans Coming</p>
+      <p style="font-size:.85rem;font-weight:300;color:rgba(242,237,232,.5);line-height:1.7;max-width:45ch;margin:0 auto">The Garden Route Weekend. The Paarl Explorer. The Cape Peninsula Loop. We are building them out — check back soon.</p>
+    </div>
+
   </div>
 </div>
 
