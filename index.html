@@ -2643,7 +2643,13 @@ document.addEventListener('click',function(e){
       div.textContent = text;
     }
     wrap.appendChild(div);
-    wrap.scrollTop = wrap.scrollHeight;
+    if (role === 'bot' || role === 'error') {
+      // Scroll so the START of the reply is visible, not the bottom of a
+      // long answer — otherwise longer replies land you mid/end of the text.
+      wrap.scrollTop = div.offsetTop - 8;
+    } else {
+      wrap.scrollTop = wrap.scrollHeight;
+    }
   }
 
   function wmSetTyping(on){
