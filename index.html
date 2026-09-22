@@ -2645,8 +2645,12 @@ document.addEventListener('click',function(e){
     wrap.appendChild(div);
     if (role === 'bot' || role === 'error') {
       // Scroll so the START of the reply is visible, not the bottom of a
-      // long answer — otherwise longer replies land you mid/end of the text.
-      wrap.scrollTop = div.offsetTop - 8;
+      // long answer. Measured against the scroll container directly (not
+      // offsetTop, which is relative to the nearest positioned ancestor —
+      // not necessarily this container — and gave the wrong offset).
+      var wrapRect = wrap.getBoundingClientRect();
+      var divRect = div.getBoundingClientRect();
+      wrap.scrollTop = wrap.scrollTop + (divRect.top - wrapRect.top) - 8;
     } else {
       wrap.scrollTop = wrap.scrollHeight;
     }
