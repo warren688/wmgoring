@@ -18,9 +18,12 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+// Note: deliberately NOT named __dirname — Netlify's bundler injects its own
+// __dirname shim into the compiled output, and declaring another one here
+// causes a "already been declared" SyntaxError at runtime.
+const functionDir = dirname(fileURLToPath(import.meta.url));
 const hubKnowledge = JSON.parse(
-  readFileSync(join(__dirname, 'hub-knowledge.json'), 'utf8')
+  readFileSync(join(functionDir, 'hub-knowledge.json'), 'utf8')
 );
 
 const SYSTEM_PROMPT = `You are the trail assistant for wmgoriding.com, Warren & Melissa Go Riding — a Western Cape mountain bike trail-hub directory.
